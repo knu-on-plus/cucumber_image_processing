@@ -1,6 +1,6 @@
-﻿# Condition-based Synthetic Dataset for Amodal Segmentation of Occluded Cucumbers in Agricultural Images
+# Condition-based Synthetic Dataset for Amodal Segmentation of Occluded Cucumbers in Agricultural Images
 
-#### Computers and Electronics in Agriculture 2025 [📄 Paper](https://www.sciencedirect.com/science/article/pii/S0168169925009068) · [📑 BibTeX](assets/cucumber_bibTex.bib)
+#### Computers and Electronics in Agriculture 2025 [Paper](https://www.sciencedirect.com/science/article/pii/S0168169925009068) · [BibTeX](assets/cucumber_bibTex.bib)
 
 <a href="https://scholar.google.co.kr/citations?user=i4nJgtEAAAAJ&hl=ko&oi=sra">Jin-Ho Son</a><sup>1</sup>*,
 <a href="https://hojunking.github.io/webpages/hojunsong/">Hojun Song</a><sup>2</sup>,
@@ -10,7 +10,7 @@
 and <a href="https://scholar.google.co.kr/citations?user=n5RWOaMAAAAJ&hl=ko&oi=sra">Yu-Shin Ha</a><sup>1,3†</sup>
 
 \* Equal contribution  
-† Corresponding author  
+† Corresponding author
 
 <sup>1</sup>Department of Bio-Industrial Mechanical Engineering, Kyungpook National University (KNU)  
 <sup>2</sup>School of Computer Science and Engineering, Kyungpook National University (KNU)  
@@ -20,104 +20,128 @@ and <a href="https://scholar.google.co.kr/citations?user=n5RWOaMAAAAJ&hl=ko&oi=s
   <img src="./assets/framework.png" alt="Framework Overview" width="70%">
 </p>
 
-This repository presents a **condition-based synthetic dataset generation framework** for **amodal instance segmentation of occluded cucumbers** in agricultural images.  
-The framework systematically synthesizes realistic occlusion scenarios by controlling **leaf composition, spatial positioning, and occlusion ratios**, while also incorporating **gamma-based brightness and contrast augmentation** to simulate diverse real-world illumination conditions.
+This repository provides a reproducible implementation of the paper's
+condition-based synthetic dataset framework. It controls leaf composition,
+position, occlusion ratio, and gamma augmentation, then exports amodal and
+visible annotations suitable for AISFormer integration.
 
-The resulting dataset enables robust training of amodal segmentation models, improving their ability to infer complete object shapes under **severe occlusion and dynamic lighting**, which are common challenges in precision agriculture environments.
+## Release Status
 
-## TODO
-- [x] README Update
-- [x] Raw Code Release (Not recommend to use)
-- [ ] Specific Code Release
+- [x] Prepared cucumber bbox and leaf-cutout input path
+- [x] SAM2 cucumber mask generation
+- [x] Configurable paper-condition synthesis and AISFormer-compatible export
+- [ ] AISFormer training and evaluation
 
-## Quickstart
+## Quick Start
 
-### 1) Install
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2) Prepare data layout
-
-```
-data/
-  splitted/
-    images/{train,valid,debugging}
-    masks/{train,valid,debugging}
-    cropped_leaves/{train,valid,debugging}
-```
-
-Notes:
-- Cucumber masks are selected by filename containing `_0_`.
-- Leaf crops are expected to be RGBA with alpha channel.
-
-### 3) Run (CLI)
+### Conda
 
 ```bash
-python modal_mask_generation.py \
-  --data_root C:\path\to\data \
-  --out_root C:\path\to\outputs \
-  --dataset_type debugging \
-  --sample_limit 5 \
-  --position random \
-  --multi_leaves 0 \
-  --random_ratio true
+./scripts/setup_omg.sh
+conda activate OMG
+./scripts/download_sam2_checkpoint.sh
 ```
-
-### 4) Run (Scripts)
 
 ```bash
-bash scripts/run_generation.sh ./data ./outputs debugging random 0 true 5
+./scripts/run_quickstart.sh
 ```
 
-```powershell
-.\scripts\run_generation.ps1 -DataRoot .\data -OutRoot .\outputs -DatasetType debugging -Position random -MultiLeaves 0 -RandomRatio $true -SampleLimit 5
+### Docker
+
+```bash
+docker build -t omg .
+# Omit "--gpus all" on CPU-only machines.
+docker run --gpus all --rm -it \
+  -v "$PWD/checkpoints:/workspace/occlusion-mask-generation/checkpoints" \
+  -v "$PWD/sample_data:/workspace/occlusion-mask-generation/sample_data" \
+  -v "$PWD/outputs:/workspace/occlusion-mask-generation/outputs" \
+  omg
 ```
 
-### Output structure
+Inside the container:
 
-```
-outputs/
-  amodal_images/
-  modal_masks/
-  amodal_info/
-    dataset.json
+```bash
+./scripts/download_sam2_checkpoint.sh
+./scripts/run_quickstart.sh
 ```
 
-## CLI Options
+The command prepares or validates the three sample scenes, generates cucumber
+masks with SAM2, synthesizes representative paper conditions, and validates
+the result. Review:
 
-- `--seed`: set RNG seed for reproducibility
-- `--dry_run true`: validate paths and exit without generating data
-- `--log_level DEBUG|INFO|WARNING|ERROR`: control console verbosity
-- `--target_size WIDTH,HEIGHT`: override output size (default `768,1024`)
+- `sample_data/quickstart/previews/`: input previews
+- `outputs/quickstart/stage2/previews/`: SAM2 mask previews
+- `outputs/quickstart/synthesis/previews/`: condition layout previews
+- `outputs/quickstart/synthesis/annotations/instances.json`: final export
+
+Project-specific YOLO weights are not distributed because their source
+training dataset cannot be redistributed. The quickstart therefore starts
+from supplied cucumber bboxes and RGBA leaf cutouts.
+
+## Configurable Synthesis
+
+Use a preset directly:
+
+```bash
+# --overwrite replaces an existing generated output directory.
+python pipeline.py synthesize \
+  --config configs/quickstart.json \
+  --overwrite
+```
+
+`configs/quickstart.json` creates a small representative result.
+`configs/paper-full.json` evaluates the full condition/ratio grid.
+`configs/paper-weighted.json` creates an exact `5:4:1` ratio distribution for
+Conditions 1-3. A copied config can select conditions and tune ratios, gamma
+values, output size, tolerance, top/bottom positions, leaf-size search ranges,
+separation, and attachment overlap.
+
+Example layout previews:
+
+<p align="center">
+  <img src="./assets/examples/quickstart_condition1.jpg" alt="Condition 1 preview" width="32%">
+  <img src="./assets/examples/quickstart_condition2.jpg" alt="Condition 2 preview" width="32%">
+  <img src="./assets/examples/quickstart_condition3.jpg" alt="Condition 3 preview" width="32%">
+</p>
+
+Related docs:
+
+- `docs/configuration.md`: synthesis presets and tunable condition parameters
+- `docs/pipeline.md`: three-stage pipeline contract
+- `docs/leaf_cutouts.md`: YOLO + SAM2 guide for preparing RGBA leaf assets
+
+## Paper Conditions
+
+- Baseline: one centered leaf at fixed `50%` occlusion
+- Condition 1: one enlarged leaf at the top or bottom
+- Condition 2: two separate leaves at the top and bottom
+- Condition 3: two attached leaves at the top or bottom
+- Occlusion ratios: `50%`, `75%`, `90%`
+- Paper target distribution for large-scale generation: `5:4:1`
+- Gamma values: `0.3`, `1.0`, `3.0`
 
 ## Citation
 
-If you find this work useful, please cite:
-```
+```bibtex
 @article{SON2025110800,
-title = {Condition-based synthetic dataset for amodal segmentation of occluded cucumbers in agricultural images},
-journal = {Computers and Electronics in Agriculture},
-volume = {238},
-pages = {110800},
-year = {2025},
-issn = {0168-1699},
-doi = {https://doi.org/10.1016/j.compag.2025.110800},
-url = {https://www.sciencedirect.com/science/article/pii/S0168169925009068},
-author = {Jin-Ho Son and Hojun Song and Chae-yeong Song and Minse Ha and Dabin Kang and Yu-Shin Ha},
-keywords = {Amodal segmentation, Computer vision, Occlusion, Precision agriculture, Synthetic dataset generation},
-abstract = {Occlusion, caused by overlapping leaves and dense foliage, poses significant challenges for crop segmentation in agricultural environments. Traditional segmentation methods struggle to handle these occlusions, particularly in complex and dynamic agricultural settings. As agricultural environments are subject to varying lighting conditions and environmental factors, the ability to detect and segment crops accurately remains a persistent issue in precision farming. This study aims to address these challenges through the development of a Synthetic Dataset Generation Framework that replicates realistic occlusion scenarios using a condition-based approach. Systematic adjustments to leaf composition, position, and occlusion ratios facilitated the framework to generate synthetic datasets representative of the diverse and complex conditions found in agricultural environments. To enhance realism, gamma correction-basedbrightness and contrast augmentations were applied to simulate both low-light and high-light conditions. These augmentations enhanced dataset diversity to better replicate real-world illumination variations. The ability of the model to handle dynamic lighting and complex occlusion scenarios was enhanced through this approach, advancing precision agriculture and contributing to sustainable farming practices by providing more reliable, adaptable segmentation solutions for real-world agricultural applications.}
+  title = {Condition-based synthetic dataset for amodal segmentation of occluded cucumbers in agricultural images},
+  journal = {Computers and Electronics in Agriculture},
+  volume = {238},
+  pages = {110800},
+  year = {2025},
+  doi = {https://doi.org/10.1016/j.compag.2025.110800},
+  author = {Jin-Ho Son and Hojun Song and Chae-yeong Song and Minse Ha and Dabin Kang and Yu-Shin Ha}
 }
 ```
 
 ## Acknowledgement
 
-This work was supported by the National Research Foundation of Korea (NRF) under the BK21 FOUR program.  
-This research was also conducted as part of the <a href="https://www.knu.ac.kr/wbbs/wbbs/bbs/btin/viewBtin.action?bbs_cde=1&btin.bbs_cde=1&btin.doc_no=1331701&btin.appl_no=000000&menu_idx=67">**2024 BK21 Graduate Student Interdisciplinary Community Project** (융복합공동체 프로젝트)</a>, under the team **“Deep Learning-based Automatic Cucumber Harvesting Robot Research”**, led by <a href="https://hojunking.github.io/webpages/hojunsong/">**Hojun Song**</a>.
+This work was supported by the National Research Foundation of Korea (NRF)
+under the BK21 FOUR program. This research was also conducted as part of the
+[2024 BK21 Graduate Student Interdisciplinary Community Project](https://www.knu.ac.kr/wbbs/wbbs/bbs/btin/viewBtin.action?bbs_cde=1&btin.bbs_cde=1&btin.doc_no=1331701&btin.appl_no=000000&menu_idx=67),
+under the team **“Deep Learning-based Automatic Cucumber Harvesting Robot
+Research”**, led by [Hojun Song](https://hojunking.github.io/webpages/hojunsong/).
 
-Our work builds on and utilizes the following tools and models:
-- [YOLOv10](https://github.com/THU-MIG/yolov10)
-- [Segment Anything Model (SAM v2)](https://github.com/facebookresearch/sam2)
-- [AISFormer](https://github.com/UARK-AICV/AISFormer)
-
+The work builds on [YOLOv10](https://github.com/THU-MIG/yolov10),
+[SAM2](https://github.com/facebookresearch/sam2), and
+[AISFormer](https://github.com/UARK-AICV/AISFormer).

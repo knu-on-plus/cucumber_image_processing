@@ -1,4 +1,12 @@
-﻿opencv-python
-numpy
-tqdm
-matplotlib
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch==2.5.1+cu121
+torchvision==0.20.1+cu121
+numpy==1.26.4
+Pillow==10.4.0
+tqdm==4.66.5
+hydra-core==1.3.2
+iopath==0.1.10
+opencv-python-headless==4.10.0.84
+pycocotools==2.0.8
+pytest==8.3.3
+ruff==0.7.2

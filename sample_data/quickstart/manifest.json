@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "created_at": "2026-06-15T07:43:43.036254+00:00",
+  "purpose": "Reproducible quickstart for the condition-based synthesis pipeline",
+  "images": [
+    {
+      "scene": "scene_001",
+      "source_id": "V003_3_3_1_2_4_2_2_1_0_0_20221019_5107_20240422195047",
+      "annotation_source": "raw_cucumber_labels/V003_3_3_1_2_4_2_2_1_0_0_20221019_5107_20240422195047.json",
+      "bbox_source": "provided_annotation"
+    },
+    {
+      "scene": "scene_002",
+      "source_id": "V003_3_3_1_2_4_2_2_1_0_0_20221019_5143_20240422195049",
+      "annotation_source": "raw_cucumber_labels/V003_3_3_1_2_4_2_2_1_0_0_20221019_5143_20240422195049.json",
+      "bbox_source": "provided_annotation"
+    },
+    {
+      "scene": "scene_003",
+      "source_id": "V003_3_3_1_2_4_2_2_1_0_0_20221019_5284_20240422195057",
+      "annotation_source": "raw_cucumber_labels/V003_3_3_1_2_4_2_2_1_0_0_20221019_5284_20240422195057.json",
+      "bbox_source": "provided_annotation"
+    }
+  ],
+  "inputs": {
+    "cucumber_detection": "provided_annotation",
+    "cucumber_mask": "pending_sam2",
+    "leaf_detection": "not_required_for_provided_cutouts",
+    "leaf_mask": "provided_rgba_alpha"
+  },
+  "next_step": {
+    "stage": 2,
+    "name": "SAM cucumber mask generation",
+    "required_output": "One full cucumber mask per scene"
+  },
+  "paper_conditions": {
+    "occlusion_ratios": [
+      0.5,
+      0.75,
+      0.9
+    ],
+    "ratio_sampling_weights": [
+      5,
+      4,
+      1
+    ],
+    "gamma_values": [
+      0.3,
+      1.0,
+      3.0
+    ],
+    "conditions": [
+      "baseline_single_center",
+      "condition_1_single_top_or_bottom",
+      "condition_2_two_separate_top_and_bottom",
+      "condition_3_two_attached_top_or_bottom"
+    ]
+  }
+}

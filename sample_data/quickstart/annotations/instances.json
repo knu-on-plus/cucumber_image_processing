@@ -1,0 +1,101 @@
+{
+  "info": {
+    "description": "Quickstart cucumber detection input",
+    "schema_version": "1.0"
+  },
+  "images": [
+    {
+      "id": 1,
+      "file_name": "images/scene_001.jpg",
+      "width": 3000,
+      "height": 4000,
+      "source_id": "V003_3_3_1_2_4_2_2_1_0_0_20221019_5107_20240422195047",
+      "stored_width": 4000,
+      "stored_height": 3000,
+      "exif_orientation": 6,
+      "orientation_policy": "apply_exif_before_using_annotations"
+    },
+    {
+      "id": 2,
+      "file_name": "images/scene_002.jpg",
+      "width": 3000,
+      "height": 4000,
+      "source_id": "V003_3_3_1_2_4_2_2_1_0_0_20221019_5143_20240422195049",
+      "stored_width": 4000,
+      "stored_height": 3000,
+      "exif_orientation": 6,
+      "orientation_policy": "apply_exif_before_using_annotations"
+    },
+    {
+      "id": 3,
+      "file_name": "images/scene_003.jpg",
+      "width": 3000,
+      "height": 4000,
+      "source_id": "V003_3_3_1_2_4_2_2_1_0_0_20221019_5284_20240422195057",
+      "stored_width": 4000,
+      "stored_height": 3000,
+      "exif_orientation": 6,
+      "orientation_policy": "apply_exif_before_using_annotations"
+    }
+  ],
+  "annotations": [
+    {
+      "id": 1,
+      "image_id": 1,
+      "category_id": 1,
+      "bbox": [
+        1353,
+        1212,
+        451,
+        1916
+      ],
+      "area": 864116,
+      "segmentation": [],
+      "iscrowd": 0,
+      "source_annotation_id": "#07443af7-cac2-436b-820b-ba3c7be4d08d",
+      "bbox_source": "provided_annotation"
+    },
+    {
+      "id": 2,
+      "image_id": 2,
+      "category_id": 1,
+      "bbox": [
+        925,
+        1224,
+        386,
+        2021
+      ],
+      "area": 780106,
+      "segmentation": [],
+      "iscrowd": 0,
+      "source_annotation_id": "#c1e52d11-85df-4580-be6f-17b0775b977e",
+      "bbox_source": "provided_annotation"
+    },
+    {
+      "id": 3,
+      "image_id": 3,
+      "category_id": 1,
+      "bbox": [
+        1107,
+        1212,
+        468,
+        1775
+      ],
+      "area": 830700,
+      "segmentation": [],
+      "iscrowd": 0,
+      "source_annotation_id": "#14817560-8d7a-45a0-a8d5-2baefe37a1cf",
+      "bbox_source": "provided_annotation"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "cucumber"
+    },
+    {
+      "id": 2,
+      "name": "leaf"
+    }
+  ]
+}

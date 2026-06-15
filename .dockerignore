@@ -1,0 +1,14 @@
+.git
+.codex
+.agents
+.pytest_cache
+.ruff_cache
+__pycache__
+*.pyc
+*.pt
+checkpoints/
+external/
+sample_data/raw_cucumber_images/
+sample_data/raw_cucumber_labels/
+sample_data/cropped_leaves_samples/
+outputs/

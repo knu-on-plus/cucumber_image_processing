@@ -1,0 +1,11 @@
+/data
+*.json
+/attempt
+__pycache__
+*.pyc
+/weights
+/temp
+/yolo_detection/oi*
+/yolo_detection/leaves*
+/checkpoints
+*.pt
