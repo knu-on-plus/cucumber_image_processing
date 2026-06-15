@@ -1,0 +1,42 @@
+{
+  "name": "paper-weighted-sample",
+  "dataset_root": "sample_data/quickstart",
+  "mask_root": "outputs/quickstart/stage2",
+  "output_root": "outputs/quickstart/synthesis_paper_weighted",
+  "synthesis": {
+    "mode": "weighted-sample",
+    "conditions": [
+      "condition_1_single_top_or_bottom",
+      "condition_2_two_separate_top_and_bottom",
+      "condition_3_two_attached_top_or_bottom"
+    ],
+    "occlusion_ratios": [0.5, 0.75, 0.9],
+    "ratio_sampling_weights": [5, 4, 1],
+    "samples_per_condition": 10,
+    "gamma_values": [0.3, 1.0, 3.0],
+    "target_size": [768, 1024],
+    "occlusion_tolerance": 0.05,
+    "seed": 0,
+    "condition_parameters": {
+      "condition_1_single_top_or_bottom": {
+        "positions": ["top", "bottom"],
+        "position_fractions": [0.18, 0.82],
+        "leaf_height_range": [0.12, 2.1],
+        "search_steps": 120
+      },
+      "condition_2_two_separate_top_and_bottom": {
+        "leaf_height_ratio": 0.72,
+        "outer_fraction_range": [-0.15, 0.42],
+        "search_steps": 180,
+        "max_leaf_overlap_ratio": 0.01
+      },
+      "condition_3_two_attached_top_or_bottom": {
+        "positions": ["top", "bottom"],
+        "position_fractions": [0.18, 0.82],
+        "leaf_height_range": [0.12, 4.0],
+        "search_steps": 180,
+        "attachment_overlap_ratio": 0.38
+      }
+    }
+  }
+}

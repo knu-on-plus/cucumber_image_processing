@@ -1,0 +1,76 @@
+{
+  "leaf_assets": [
+    {
+      "id": "leaf_001",
+      "file_name": "leaf_cutouts/cropped_oi_005_1_1_00.png",
+      "width": 2067,
+      "height": 1747,
+      "alpha_nonzero_fraction": 0.589556,
+      "alpha_partial_pixels": 0,
+      "mask_source": "provided_rgba_alpha"
+    },
+    {
+      "id": "leaf_002",
+      "file_name": "leaf_cutouts/cropped_oi_011_1_1_00.png",
+      "width": 1034,
+      "height": 874,
+      "alpha_nonzero_fraction": 0.685099,
+      "alpha_partial_pixels": 0,
+      "mask_source": "provided_rgba_alpha"
+    },
+    {
+      "id": "leaf_003",
+      "file_name": "leaf_cutouts/cropped_oi_043_1_1_00.png",
+      "width": 892,
+      "height": 847,
+      "alpha_nonzero_fraction": 0.5523,
+      "alpha_partial_pixels": 0,
+      "mask_source": "provided_rgba_alpha"
+    },
+    {
+      "id": "leaf_004",
+      "file_name": "leaf_cutouts/cropped_oi_076_1_1_00.png",
+      "width": 1744,
+      "height": 1657,
+      "alpha_nonzero_fraction": 0.651728,
+      "alpha_partial_pixels": 0,
+      "mask_source": "provided_rgba_alpha"
+    },
+    {
+      "id": "leaf_005",
+      "file_name": "leaf_cutouts/cropped_oi_119_1_1_00.png",
+      "width": 1192,
+      "height": 1056,
+      "alpha_nonzero_fraction": 0.646758,
+      "alpha_partial_pixels": 0,
+      "mask_source": "provided_rgba_alpha"
+    },
+    {
+      "id": "leaf_006",
+      "file_name": "leaf_cutouts/cropped_oi_282_1_1_00.png",
+      "width": 1885,
+      "height": 1886,
+      "alpha_nonzero_fraction": 0.649699,
+      "alpha_partial_pixels": 0,
+      "mask_source": "provided_rgba_alpha"
+    },
+    {
+      "id": "leaf_007",
+      "file_name": "leaf_cutouts/cropped_oi_410_1_1_00.png",
+      "width": 2041,
+      "height": 1752,
+      "alpha_nonzero_fraction": 0.725024,
+      "alpha_partial_pixels": 0,
+      "mask_source": "provided_rgba_alpha"
+    },
+    {
+      "id": "leaf_008",
+      "file_name": "leaf_cutouts/cropped_oi_545_1_1_00.png",
+      "width": 1090,
+      "height": 1063,
+      "alpha_nonzero_fraction": 0.740751,
+      "alpha_partial_pixels": 0,
+      "mask_source": "provided_rgba_alpha"
+    }
+  ]
+}

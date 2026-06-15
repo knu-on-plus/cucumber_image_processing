@@ -1,0 +1,3 @@
+# Backward-compatible alias. The OMG environment now installs pip packages
+# from requirements.txt after creating the base conda environment.
+-r requirements.txt
